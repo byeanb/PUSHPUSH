@@ -15,4 +15,6 @@ export default [
   route("setup", "./routes/setup.tsx"),
   route("pending", "./routes/pending.tsx"),
   route("forgot-password", "./routes/forgot-password.tsx"),
+  route("push-test", "./routes/push-test.tsx"),
+  route("push-send", "./routes/push-send.ts"),
 ] satisfies RouteConfig

@@ -4,6 +4,7 @@ import type { Route } from "./+types/root"
 import "./app.css"
 import { TooltipProvider } from "~/components/ui/tooltip"
 import { Toaster } from "~/components/ui/sonner"
+import { useEffect } from "react"
 
 export const links: Route.LinksFunction = () => []
 
@@ -29,6 +30,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  useEffect(() => {
+    import("./registerPWA").then(({ registerPWA }) => {
+      registerPWA()
+    })
+  }, [])
+
   return <Outlet />
 }
 
