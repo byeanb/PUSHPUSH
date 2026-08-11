@@ -6,7 +6,12 @@ import { TooltipProvider } from "~/components/ui/tooltip"
 import { Toaster } from "~/components/ui/sonner"
 import { useEffect } from "react"
 
-export const links: Route.LinksFunction = () => []
+export const links: Route.LinksFunction = () => [
+  {
+    rel: "manifest",
+    href: "/manifest.webmanifest",
+  },
+]
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
