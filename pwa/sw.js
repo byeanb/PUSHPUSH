@@ -14,8 +14,10 @@ self.addEventListener("push", (event) => {
   }
 
   event.waitUntil(
-    self.registration.showNotification("확인하지 않은 알람이 있어습니다.", {
+    self.registration.showNotification("PWA Push Test", {
       body: message,
+
+      tag: "chat-test",
 
       actions: [
         {
