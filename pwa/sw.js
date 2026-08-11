@@ -14,22 +14,33 @@ self.addEventListener("push", (event) => {
   }
 
   event.waitUntil(
-    self.registration.showNotification("PWA Push Test", {
-      body: message,
+    (async () => {
+      // 이 Service Worker가 띄운 기존 알림 전부 가져오기
+      const notifications = await self.registration.getNotifications()
 
-      tag: "chat-test",
+      // 기존 알림 전부 닫기
+      notifications.forEach((notification) => {
+        notification.close()
+      })
 
-      actions: [
-        {
-          action: "reply",
-          title: "답장하기",
+      // 최신 알림 하나만 표시
+      await self.registration.showNotification("PWA Push Test", {
+        body: message,
+
+        tag: "latest-message",
+
+        actions: [
+          {
+            action: "reply",
+            title: "답장하기",
+          },
+        ],
+
+        data: {
+          url: "/push-test",
         },
-      ],
-
-      data: {
-        url: "/push-test",
-      },
-    })
+      })
+    })()
   )
 })
 
