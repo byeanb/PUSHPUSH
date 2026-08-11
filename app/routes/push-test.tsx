@@ -254,8 +254,6 @@ export default function PushTestPage() {
       }
 
       console.log("Push sent:", result)
-
-      alert(`폰으로 Push 전송 완료\n성공: ${result.sent}\n실패: ${result.failed}`)
     } catch (error) {
       console.error("Push request failed:", error)
       alert("Push 요청 실패")
