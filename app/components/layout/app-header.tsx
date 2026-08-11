@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { BellIcon, SearchIcon, XIcon } from "lucide-react"
+import { Link } from "react-router"
 
 import { Avatar, AvatarFallback } from "~/components/ui/avatar"
 import { Button } from "~/components/ui/button"
@@ -27,34 +28,33 @@ export function AppHeader({ email }: AppHeaderProps) {
   }, [isMobileSearchOpen])
 
   return (
-    <header className="bg-background/95 fixed top-0 z-10 grid h-14 w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b px-3 backdrop-blur sm:px-4 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)_minmax(0,1fr)]">
-      <div className="flex items-center gap-2">
-        <a
-          href="/"
-          className="hover:text-primary text-sm font-semibold tracking-wide transition-colors"
-        >
+    <header className="bg-background fixed inset-x-0 top-0 z-50 flex h-14 items-center border-b px-3 sm:px-4">
+      <div className="flex w-full items-center gap-3">
+        <Link to="/push-test" className="shrink-0 font-semibold">
           KMLA Online
-        </a>
-      </div>
-      <div className="relative mx-auto hidden w-full max-w-xl md:col-start-2 md:block">
-        <SearchIcon className="text-muted-foreground pointer-events-none absolute top-1/2 left-2.5 -translate-y-1/2" />
-        <Input className="h-9 pl-9" placeholder="Search groups, posts, and people" />
-      </div>
-      <div className="ml-auto flex items-center gap-2 justify-self-end md:col-start-3">
+        </Link>
+
+        <div className="relative ml-auto hidden w-full max-w-sm md:block">
+          <SearchIcon className="text-muted-foreground pointer-events-none absolute top-1/2 left-2.5 -translate-y-1/2" />
+          <Input className="h-9 pl-9" placeholder="Search groups, posts, and people" />
+        </div>
+
         <Button
           variant="ghost"
           size="icon"
           aria-label="Search"
           aria-expanded={isMobileSearchOpen}
-          className="md:hidden"
+          className="ml-auto md:hidden"
           onClick={() => setIsMobileSearchOpen(true)}
         >
           <SearchIcon />
         </Button>
+
         <Button variant="ghost" size="icon" aria-label="Notifications">
           <BellIcon />
         </Button>
-        <Avatar className="size-8">
+
+        <Avatar>
           <AvatarFallback>{getInitials(email)}</AvatarFallback>
         </Avatar>
       </div>
@@ -68,6 +68,7 @@ export function AppHeader({ email }: AppHeaderProps) {
       >
         <div className="relative min-w-0 flex-1">
           <SearchIcon className="text-muted-foreground pointer-events-none absolute top-1/2 left-2.5 -translate-y-1/2" />
+
           <Input
             ref={mobileSearchInputRef}
             className="h-9 pl-9"
@@ -79,6 +80,7 @@ export function AppHeader({ email }: AppHeaderProps) {
             }}
           />
         </div>
+
         <Button
           variant="ghost"
           size="icon"

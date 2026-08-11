@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useSearchParams } from "react-router"
+import { pushSupabase } from "~/lib/push-supabase"
 
 export default function PushTestPage() {
   const [permission, setPermission] = useState("unknown")
@@ -86,11 +87,33 @@ export default function PushTestPage() {
         applicationServerKey: urlBase64ToUint8Array(publicKey),
       })
 
+      const json = newSubscription.toJSON()
+
+      if (!json.endpoint || !json.keys?.p256dh || !json.keys?.auth) {
+        throw new Error("Push Subscription 정보가 완전하지 않습니다.")
+      }
+
+      const { error } = await pushSupabase.from("push_subscriptions").upsert(
+        {
+          device_name: "test-phone",
+          endpoint: json.endpoint,
+          p256dh: json.keys.p256dh,
+          auth: json.keys.auth,
+        },
+        {
+          onConflict: "endpoint",
+        }
+      )
+
+      if (error) {
+        console.error("Supabase 저장 실패:", error)
+        throw error
+      }
+
+      console.log("Supabase에 Push Subscription 저장 완료")
+
       setPushSubscription(newSubscription)
-
-      console.log("Push Subscription:", newSubscription)
-
-      setSubscription(JSON.stringify(newSubscription.toJSON(), null, 2))
+      setSubscription(JSON.stringify(json, null, 2))
     } catch (error) {
       console.error("Push subscription failed:", error)
       alert("Push 구독 생성 실패. Console을 확인해주세요.")
