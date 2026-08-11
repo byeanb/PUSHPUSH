@@ -233,11 +233,6 @@ export default function PushTestPage() {
 
   // 현재 브라우저에 테스트 Push 전송
   async function sendPush() {
-    if (!pushSubscription) {
-      alert("현재 Push 구독이 없습니다. 먼저 알림 권한을 허용해주세요.")
-      return
-    }
-
     try {
       const response = await fetch("/push-send", {
         method: "POST",
@@ -245,8 +240,8 @@ export default function PushTestPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          subscription: pushSubscription.toJSON(),
           message,
+          target: "mobile",
         }),
       })
 
@@ -254,11 +249,13 @@ export default function PushTestPage() {
 
       if (!response.ok) {
         console.error(result)
-        alert("Push 전송 실패")
+        alert(result.error ?? "Push 전송 실패")
         return
       }
 
       console.log("Push sent:", result)
+
+      alert(`폰으로 Push 전송 완료\n성공: ${result.sent}\n실패: ${result.failed}`)
     } catch (error) {
       console.error("Push request failed:", error)
       alert("Push 요청 실패")
